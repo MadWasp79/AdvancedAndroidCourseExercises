@@ -2,6 +2,8 @@ package com.mwhive.advancedandroid.di;
 
 import android.app.Activity;
 
+import com.bluelinelabs.conductor.Controller;
+
 /**
  * Created by madwa on 09-Feb-18.
  */
@@ -12,11 +14,19 @@ public class Injector {
 
     }
 
-    public static void inject(Activity activity) {
-        ActivityInjector.get(activity).inject(activity);
+    //inject Activity
+    public static void inject(Activity activity) {ActivityInjector.get(activity).inject(activity);}
+
+    //clear Activity after it finished
+    public static void clearComponent(Activity activity) {ActivityInjector.get(activity).clear(activity);}
+
+    //inject Controller
+    public static void inject(Controller controller) {
+        ScreenInjector.get(controller.getActivity()).inject(controller);
     }
 
-    public static void clearComponent(Activity activity) {
-        ActivityInjector.get(activity).clear(activity);
+    public static void clearComponent(Controller controller) {
+        ScreenInjector.get(controller.getActivity()).clear(controller);
     }
+
 }
