@@ -9,7 +9,7 @@ import javax.inject.Inject;
 /**
  * Created by madwa on 08-Feb-18.
  */
-
+@SuppressWarnings("FieldCanBeLocal")
 public class MyApplication extends Application {
 
     @Inject ActivityInjector mActivityInjector;

@@ -15,22 +15,21 @@ import com.bluelinelabs.conductor.Router;
 import com.mwhive.advancedandroid.R;
 import com.mwhive.advancedandroid.di.Injector;
 import com.mwhive.advancedandroid.di.ScreenInjector;
+import com.mwhive.advancedandroid.ui.ScreenNavigator;
 
 import java.util.UUID;
 
 import javax.inject.Inject;
 
-/**
- * Created by madwa on 09-Feb-18.
- */
-
 public abstract class BaseActivity extends AppCompatActivity{
 
     private static String INSTANCE_ID_KEY = "instance_id";
-    private Router router;
 
     @Inject ScreenInjector screenInjector;
+    @Inject ScreenNavigator screenNavigator;
+
     private String instanceId;
+    private Router router;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,6 +47,8 @@ public abstract class BaseActivity extends AppCompatActivity{
         }
 
         router = Conductor.attachRouter(this, screenContainer, savedInstanceState);
+        screenNavigator.initWithRouter(router, initialScreen());
+
         monitorBackStack();
         super.onCreate(savedInstanceState);
     }
@@ -57,10 +58,20 @@ public abstract class BaseActivity extends AppCompatActivity{
     @LayoutRes
     protected abstract int layoutRes();
 
+    protected abstract Controller initialScreen();
+
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString(INSTANCE_ID_KEY, instanceId);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (!screenNavigator.pop()) {
+            super.onBackPressed();
+        }
+
     }
 
     public String getInstanceId() {
@@ -70,6 +81,7 @@ public abstract class BaseActivity extends AppCompatActivity{
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        screenNavigator.clear();
         if (isFinishing()) {
             Injector.clearComponent(this);
         }
