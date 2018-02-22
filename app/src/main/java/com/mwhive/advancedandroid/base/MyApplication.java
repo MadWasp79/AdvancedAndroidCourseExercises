@@ -2,9 +2,12 @@ package com.mwhive.advancedandroid.base;
 
 import android.app.Application;
 
+import com.mwhive.advancedandroid.BuildConfig;
 import com.mwhive.advancedandroid.di.ActivityInjector;
 
 import javax.inject.Inject;
+
+import timber.log.Timber;
 
 /**
  * Created by madwa on 08-Feb-18.
@@ -24,6 +27,10 @@ public class MyApplication extends Application {
                 .applicationModule(new ApplicationModule(this))
                 .build();
         mComponent.inject(this);
+
+        if (BuildConfig.DEBUG) {
+            Timber.plant(new Timber.DebugTree());
+        }
 
 
     }
