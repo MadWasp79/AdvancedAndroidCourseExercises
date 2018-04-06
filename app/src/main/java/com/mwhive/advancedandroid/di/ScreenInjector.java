@@ -57,7 +57,7 @@ public class ScreenInjector {
             throw new IllegalArgumentException("Controller must be hosted by BaseActivity");
         }
 
-        return ((BaseActivity) activity).getScreenInjectror();
+        return ((BaseActivity) activity).getScreenInjector();
     }
 
 }

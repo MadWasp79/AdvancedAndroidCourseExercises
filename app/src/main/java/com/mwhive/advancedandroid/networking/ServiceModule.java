@@ -2,7 +2,7 @@ package com.mwhive.advancedandroid.networking;
 
 
 import com.mwhive.advancedandroid.model.AdapterFactory;
-import com.mwhive.advancedandroid.model.ZonedDateTimeAdpater;
+import com.mwhive.advancedandroid.model.ZonedDateTimeAdapter;
 import com.squareup.moshi.Moshi;
 
 import javax.inject.Named;
@@ -15,10 +15,6 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.moshi.MoshiConverterFactory;
 
-/**
- * Created by MadWasp79 on 15-Feb-18.
- */
-
 @Module(includes = NetworkModule.class)
 public abstract class ServiceModule {
 
@@ -27,7 +23,7 @@ public abstract class ServiceModule {
     static Moshi provideMoshi() {
         return new Moshi.Builder()
                 .add(AdapterFactory.create())
-                .add(new ZonedDateTimeAdpater())
+                .add(new ZonedDateTimeAdapter())
                 .build();
     }
 
@@ -41,5 +37,4 @@ public abstract class ServiceModule {
                 .baseUrl(baseUrl)
                 .build();
     }
-
 }

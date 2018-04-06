@@ -20,7 +20,7 @@ public abstract class Repo {
 
     public abstract String name();
 
-    public abstract String decription();
+    public abstract String description();
 
     public abstract User owner();
 

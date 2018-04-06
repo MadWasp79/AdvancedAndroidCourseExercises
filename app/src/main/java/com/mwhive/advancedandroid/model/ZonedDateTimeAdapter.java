@@ -12,7 +12,7 @@ import org.threeten.bp.ZonedDateTime;
  * Created by MadWasp79 on 14-Feb-18.
  */
 
-public class ZonedDateTimeAdpater {
+public class ZonedDateTimeAdapter {
 
     @FromJson
     ZonedDateTime fromJson(String json) {

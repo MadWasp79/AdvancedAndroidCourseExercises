@@ -1,12 +1,7 @@
 package com.mwhive.advancedandroid.data;
 
-
 import io.reactivex.Single;
 import retrofit2.http.GET;
-
-/**
- * Created by MadWasp79 on 15-Feb-18.
- */
 
 public interface RepoService {
 
