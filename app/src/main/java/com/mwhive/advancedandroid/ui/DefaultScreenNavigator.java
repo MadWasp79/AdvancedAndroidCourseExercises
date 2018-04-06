@@ -8,9 +8,6 @@ import com.mwhive.advancedandroid.di.ScreenInjector;
 
 import javax.inject.Inject;
 
-/**
- * Created by madwa on 14-Feb-18.
- */
 
 @ActivityScope
 public class DefaultScreenNavigator implements ScreenNavigator{

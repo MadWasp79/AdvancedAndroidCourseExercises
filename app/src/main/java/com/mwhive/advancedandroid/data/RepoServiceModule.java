@@ -1,17 +1,14 @@
 package com.mwhive.advancedandroid.data;
 
-
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import io.reactivex.annotations.NonNull;
 import retrofit2.Retrofit;
 
-/**
- * Created by MadWasp79 on 15-Feb-18.
- */
 @Module
-public class RepoServiceModule {
+public abstract class RepoServiceModule {
 
     @Provides
     @Singleton

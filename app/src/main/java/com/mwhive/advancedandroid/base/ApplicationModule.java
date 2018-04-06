@@ -6,14 +6,10 @@ import android.content.Context;
 import dagger.Module;
 import dagger.Provides;
 
-/**
- * Created by madwa on 08-Feb-18.
- */
-
 @Module
 public class ApplicationModule {
 
-    private Application application;
+    private final Application application;
 
     ApplicationModule(Application application) {
         this.application = application;
@@ -23,5 +19,4 @@ public class ApplicationModule {
     Context provideApplicationContext() {
         return application;
     }
-
 }

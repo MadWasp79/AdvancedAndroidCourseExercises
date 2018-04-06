@@ -7,11 +7,11 @@ import dagger.Subcomponent;
 import dagger.android.AndroidInjector;
 
 @ActivityScope
-@Subcomponent (modules = {
+@Subcomponent(modules = {
         MainScreenBindingModule.class,
         NavigationModule.class,
 })
-public interface MainActivityComponent extends AndroidInjector<MainActivity>{
+public interface MainActivityComponent extends AndroidInjector<MainActivity> {
 
     @Subcomponent.Builder
     abstract class Builder extends AndroidInjector.Builder<MainActivity> {

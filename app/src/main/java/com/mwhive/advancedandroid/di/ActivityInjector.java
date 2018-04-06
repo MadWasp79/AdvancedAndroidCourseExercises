@@ -15,10 +15,6 @@ import javax.inject.Provider;
 
 import dagger.android.AndroidInjector;
 
-/**
- * Created by madwa on 09-Feb-18.
- */
-
 public class ActivityInjector {
 
     private final Map<Class<? extends Activity>, Provider<AndroidInjector.Factory<? extends Activity>>> mActivityInjectors;

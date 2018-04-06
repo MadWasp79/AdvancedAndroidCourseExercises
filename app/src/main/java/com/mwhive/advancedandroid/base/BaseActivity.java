@@ -32,7 +32,7 @@ public abstract class BaseActivity extends AppCompatActivity{
     private Router router;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         if (savedInstanceState != null) {
             instanceId = savedInstanceState.getString(INSTANCE_ID_KEY);
         } else {
@@ -48,20 +48,12 @@ public abstract class BaseActivity extends AppCompatActivity{
 
         router = Conductor.attachRouter(this, screenContainer, savedInstanceState);
         screenNavigator.initWithRouter(router, initialScreen());
-
         monitorBackStack();
         super.onCreate(savedInstanceState);
     }
 
-
-
-    @LayoutRes
-    protected abstract int layoutRes();
-
-    protected abstract Controller initialScreen();
-
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString(INSTANCE_ID_KEY, instanceId);
     }
@@ -71,8 +63,12 @@ public abstract class BaseActivity extends AppCompatActivity{
         if (!screenNavigator.pop()) {
             super.onBackPressed();
         }
-
     }
+
+    @LayoutRes
+    protected abstract int layoutRes();
+
+    protected abstract Controller initialScreen();
 
     public String getInstanceId() {
         return instanceId;
@@ -87,11 +83,11 @@ public abstract class BaseActivity extends AppCompatActivity{
         }
     }
 
-    public ScreenInjector getScreenInjectror() {
+    public ScreenInjector getScreenInjector() {
         return screenInjector;
     }
 
-    private void monitorBackStack(){
+    private void monitorBackStack() {
         router.addChangeListener(new ControllerChangeHandler.ControllerChangeListener() {
             @Override
             public void onChangeStarted(
@@ -113,7 +109,6 @@ public abstract class BaseActivity extends AppCompatActivity{
                 if (!isPush && from != null) {
                     Injector.clearComponent(from);
                 }
-
             }
         });
     }

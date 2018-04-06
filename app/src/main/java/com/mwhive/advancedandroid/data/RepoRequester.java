@@ -10,17 +10,12 @@ import javax.inject.Inject;
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
 
-/**
- * Created by MadWasp79 on 15-Feb-18.
- */
-
 public class RepoRequester {
 
     private final RepoService service;
 
     @Inject
     RepoRequester(RepoService service) {
-
         this.service = service;
     }
 

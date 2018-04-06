@@ -9,14 +9,11 @@ import com.squareup.moshi.Moshi;
 
 import java.util.List;
 
-/**
- * Created by MadWasp79 on 15-Feb-18.
- */
 
 @AutoValue
 public abstract class TrendingReposResponse {
 
-    @Json(name="items")
+    @Json(name = "items")
     public abstract List<Repo> repos();
 
     public static JsonAdapter<TrendingReposResponse> jsonAdapter(Moshi moshi) {

@@ -1,8 +1,11 @@
 package com.mwhive.advancedandroid.trending;
 
 
+import android.annotation.SuppressLint;
+
 import com.mwhive.advancedandroid.data.RepoRequester;
 import com.mwhive.advancedandroid.di.ScreenScope;
+import com.mwhive.advancedandroid.model.Repo;
 
 import javax.inject.Inject;
 
@@ -12,7 +15,7 @@ import javax.inject.Inject;
 
 
 @ScreenScope
-public class TrendingReposPresenter {
+class TrendingReposPresenter implements RepoAdapter.RepoClickedListener {
     private final TrendingReposViewModel mViewModel;
     private final RepoRequester mRepoRequester;
 
@@ -25,6 +28,7 @@ public class TrendingReposPresenter {
 
     }
 
+    @SuppressLint("CheckResult")
     private void loadRepos() {
         mRepoRequester.getTrendingRepos()
                 .doOnSubscribe(__ -> mViewModel.loadingUpdated().accept(true))
@@ -32,4 +36,8 @@ public class TrendingReposPresenter {
                 .subscribe(mViewModel.reposUpdated(), mViewModel.onError());
     }
 
+    @Override
+    public void onRepoClicked(Repo repo) {
+
+    }
 }
