@@ -3,7 +3,7 @@ package com.mwhive.advancedandroid.trending;
 
 import android.annotation.SuppressLint;
 
-import com.mwhive.advancedandroid.data.RepoRequester;
+import com.mwhive.advancedandroid.data.RepoRepository;
 import com.mwhive.advancedandroid.di.ScreenScope;
 import com.mwhive.advancedandroid.model.Repo;
 
@@ -16,24 +16,26 @@ import javax.inject.Inject;
 
 @ScreenScope
 class TrendingReposPresenter implements RepoAdapter.RepoClickedListener {
-    private final TrendingReposViewModel mViewModel;
-    private final RepoRequester mRepoRequester;
+    private final TrendingReposViewModel viewModel;
+    private final RepoRepository repoRepository;
+
 
     @Inject
-    TrendingReposPresenter(TrendingReposViewModel viewModel, RepoRequester repoRequester) {
+    TrendingReposPresenter(TrendingReposViewModel viewModel, RepoRepository repoRepository) {
 
-        mViewModel = viewModel;
-        mRepoRequester = repoRequester;
+        this.viewModel = viewModel;
+        this.repoRepository = repoRepository;
+
         loadRepos();
 
     }
 
     @SuppressLint("CheckResult")
     private void loadRepos() {
-        mRepoRequester.getTrendingRepos()
-                .doOnSubscribe(__ -> mViewModel.loadingUpdated().accept(true))
-                .doOnEvent((d, t) -> mViewModel.loadingUpdated().accept(false))
-                .subscribe(mViewModel.reposUpdated(), mViewModel.onError());
+        repoRepository.getTrendingRepos()
+                .doOnSubscribe(__ -> viewModel.loadingUpdated().accept(true))
+                .doOnEvent((d, t) -> viewModel.loadingUpdated().accept(false))
+                .subscribe(viewModel.reposUpdated(), viewModel.onError());
     }
 
     @Override

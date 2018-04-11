@@ -1,6 +1,6 @@
 package com.mwhive.advancedandroid.trending;
 
-import com.mwhive.advancedandroid.data.RepoRequester;
+import com.mwhive.advancedandroid.data.RepoRepository;
 import com.mwhive.advancedandroid.data.TrendingReposResponse;
 import com.mwhive.advancedandroid.model.Repo;
 import com.mwhive.advancedandroid.testutils.TestUtils;
@@ -25,86 +25,91 @@ import static org.mockito.Mockito.when;
 @SuppressWarnings("WeakerAccess")
 public class TrendingReposPresenterTest {
 
-    @Mock RepoRequester mRepoRequester;
-    @Mock TrendingReposViewModel mViewModel;
-    @Mock Consumer<Throwable> onErrorConsumer;
-    @Mock Consumer<List<Repo>> onSuccessConsumer;
-    @Mock Consumer<Boolean> loadingConsumer;
+  @Mock
+  RepoRepository repoRepository;
+  @Mock
+  TrendingReposViewModel mViewModel;
+  @Mock
+  Consumer<Throwable> onErrorConsumer;
+  @Mock
+  Consumer<List<Repo>> onSuccessConsumer;
+  @Mock
+  Consumer<Boolean> loadingConsumer;
 
-    private TrendingReposPresenter presenter;
+  private TrendingReposPresenter presenter;
 
-    @Before
-    public void setUp() throws Exception {
-        MockitoAnnotations.initMocks(this);
-        when(mViewModel.loadingUpdated()).thenReturn(loadingConsumer);
-        when(mViewModel.onError()).thenReturn(onErrorConsumer);
-        when(mViewModel.reposUpdated()).thenReturn(onSuccessConsumer);
-    }
+  @Before
+  public void setUp() throws Exception {
+    MockitoAnnotations.initMocks(this);
+    when(mViewModel.loadingUpdated()).thenReturn(loadingConsumer);
+    when(mViewModel.onError()).thenReturn(onErrorConsumer);
+    when(mViewModel.reposUpdated()).thenReturn(onSuccessConsumer);
+  }
 
-    @Test
-    public void reposLoaded() throws Exception {
-        List<Repo> mRepos = setUpSuccess();
-        initializePresenter();
+  @Test
+  public void reposLoaded() throws Exception {
+    List<Repo> mRepos = setUpSuccess();
+    initializePresenter();
 
-        verify(mRepoRequester).getTrendingRepos();
-        verify(onSuccessConsumer).accept(mRepos);
-        verifyZeroInteractions(onErrorConsumer);
-    }
+    verify(repoRepository).getTrendingRepos();
+    verify(onSuccessConsumer).accept(mRepos);
+    verifyZeroInteractions(onErrorConsumer);
+  }
 
-    @Test
-    public void reposLoadedError() throws Exception {
-        Throwable error = setUpError();
-        initializePresenter();
+  @Test
+  public void reposLoadedError() throws Exception {
+    Throwable error = setUpError();
+    initializePresenter();
 
+    verify(onErrorConsumer).accept(error);
+    verifyZeroInteractions(onSuccessConsumer);
+  }
 
-        verify(onErrorConsumer).accept(error);
-        verifyZeroInteractions(onSuccessConsumer);
-    }
+  @Test
+  public void loadingSuccess() throws Exception {
+    setUpSuccess();
+    initializePresenter();
 
-    @Test
-    public void loadingSuccess() throws Exception {
-        setUpSuccess();
-        initializePresenter();
+    InOrder inOrder = Mockito.inOrder(loadingConsumer);
+    inOrder.verify(loadingConsumer).accept(true);
+    inOrder.verify(loadingConsumer).accept(false);
+  }
 
-        InOrder inOrder = Mockito.inOrder(loadingConsumer);
-        inOrder.verify(loadingConsumer).accept(true);
-        inOrder.verify(loadingConsumer).accept(false);
-    }
+  @Test
+  public void loadingError() throws Exception {
+    //noinspection ThrowableNotThrown
+    setUpError();
+    initializePresenter();
 
-    @Test
-    public void loadingError() throws Exception {
-        //noinspection ThrowableNotThrown
-        setUpError();
-        initializePresenter();
+    InOrder inOrder = Mockito.inOrder(loadingConsumer);
+    inOrder.verify(loadingConsumer).accept(true);
+    inOrder.verify(loadingConsumer).accept(false);
+  }
 
-        InOrder inOrder = Mockito.inOrder(loadingConsumer);
-        inOrder.verify(loadingConsumer).accept(true);
-        inOrder.verify(loadingConsumer).accept(false);
-    }
+  @Test
+  public void onRepoClicked() {
+    //TODO
 
-    @Test
-    public void onRepoClicked() {
-        //TODO
+  }
 
-    }
+  private List<Repo> setUpSuccess() {
+    TrendingReposResponse mResponse = TestUtils
+        .loadJson("mock/get_trending_repos.json", TrendingReposResponse.class);
+    List<Repo> mRepos = mResponse.repos();
 
-    private List<Repo> setUpSuccess() {
-        TrendingReposResponse mResponse = TestUtils.loadJson("mock/get_trending_repos.json", TrendingReposResponse.class);
-        List<Repo> mRepos = mResponse.repos();
+    when(repoRepository.getTrendingRepos()).thenReturn(Single.just(mRepos));
 
-        when(mRepoRequester.getTrendingRepos()).thenReturn(Single.just(mRepos));
+    return mRepos;
+  }
 
-        return mRepos;
-    }
+  private Throwable setUpError() {
+    Throwable error = new IOException();
+    when(repoRepository.getTrendingRepos()).thenReturn(Single.error(error));
 
-    private Throwable setUpError() {
-        Throwable error = new IOException();
-        when(mRepoRequester.getTrendingRepos()).thenReturn(Single.error(error));
+    return error;
+  }
 
-        return error;
-    }
-
-    private void initializePresenter() {
-        presenter = new TrendingReposPresenter(mViewModel, mRepoRequester);
-    }
+  private void initializePresenter() {
+    presenter = new TrendingReposPresenter(mViewModel, repoRepository);
+  }
 }
