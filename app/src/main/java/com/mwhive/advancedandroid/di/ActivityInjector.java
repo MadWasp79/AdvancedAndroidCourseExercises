@@ -17,54 +17,55 @@ import dagger.android.AndroidInjector;
 
 public class ActivityInjector {
 
-    private final Map<Class<? extends Activity>, Provider<AndroidInjector.Factory<? extends Activity>>> mActivityInjectors;
-    private final Map<String, AndroidInjector<? extends Activity>> cache = new HashMap<>();
+  private final Map<Class<? extends Activity>, Provider<AndroidInjector.Factory<? extends Activity>>> mActivityInjectors;
+  private final Map<String, AndroidInjector<? extends Activity>> cache = new HashMap<>();
 
 
-    @Inject
-    public ActivityInjector(Map<Class<? extends Activity>, Provider<AndroidInjector.Factory<? extends Activity>>> activityInjectors){
-        mActivityInjectors = activityInjectors;
+  @Inject
+  public ActivityInjector(
+      Map<Class<? extends Activity>, Provider<AndroidInjector.Factory<? extends Activity>>> activityInjectors) {
+    mActivityInjectors = activityInjectors;
+  }
+
+  void inject(Activity activity) {
+    //проверяем, является ли активити инстансом БейзАктивити
+    if (!(activity instanceof BaseActivity)) {
+      throw new IllegalArgumentException("Activity must extend BaseActivity");
     }
 
-    void inject(Activity activity) {
-        //проверяем, является ли активити инстансом БейзАктивити
-        if (!(activity instanceof BaseActivity)) {
-            throw new IllegalArgumentException("Activity must extend BaseActivity");
-        }
+    //получаем инстанс айди
+    String instanceId = ((BaseActivity) activity).getInstanceId();
 
-        //получаем инстан айди
-        String instanceId = ((BaseActivity) activity).getInstanceId();
-
-        //проверяем, есть ли єтот инстанс в кеше, и если есть - инжектим активити из кеша
-        if (cache.containsKey(instanceId)) {
-            //noinspection unchecked
-            ((AndroidInjector<Activity>) cache.get(instanceId)).inject(activity);
-            return;
-        }
-
-        //создаем новый инстанс, добавляем в кеш и инжектим.
-        //noinspection unchecked
-        AndroidInjector.Factory<Activity> injectorFactory =
-                (AndroidInjector.Factory<Activity>)
-                        mActivityInjectors.get(activity.getClass()).get();
-        AndroidInjector<Activity> injector = injectorFactory.create(activity);
-        cache.put(instanceId, injector);
-        injector.inject(activity);
-
+    //проверяем, есть ли єтот инстанс в кеше, и если есть - инжектим активити из кеша
+    if (cache.containsKey(instanceId)) {
+      //noinspection unchecked
+      ((AndroidInjector<Activity>) cache.get(instanceId)).inject(activity);
+      return;
     }
 
-    //убираем активити из кеша (когда активити finished)
-    void clear(Activity activity) {
-        if (!(activity instanceof BaseActivity)) {
-            throw new IllegalArgumentException("Activity must extend BaseActivity");
-        }
+    //создаем новый инстанс, добавляем в кеш и инжектим.
+    //noinspection unchecked
+    AndroidInjector.Factory<Activity> injectorFactory =
+        (AndroidInjector.Factory<Activity>)
+            mActivityInjectors.get(activity.getClass()).get();
+    AndroidInjector<Activity> injector = injectorFactory.create(activity);
+    cache.put(instanceId, injector);
+    injector.inject(activity);
 
-        cache.remove(((BaseActivity) activity).getInstanceId());
+  }
+
+  //убираем активити из кеша (когда активити finished)
+  void clear(Activity activity) {
+    if (!(activity instanceof BaseActivity)) {
+      throw new IllegalArgumentException("Activity must extend BaseActivity");
     }
 
-    //метод для получения этого инжектора извне
-    static ActivityInjector get(Context context) {
-        return ((MyApplication) context.getApplicationContext()).getActivityInjector();
-    }
+    cache.remove(((BaseActivity) activity).getInstanceId());
+  }
+
+  //метод для получения этого инжектора извне
+  static ActivityInjector get(Context context) {
+    return ((MyApplication) context.getApplicationContext()).getActivityInjector();
+  }
 
 }
