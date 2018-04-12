@@ -8,8 +8,9 @@ import com.mwhive.advancedandroid.di.ScreenScope;
 import com.mwhive.advancedandroid.model.Contributor;
 import com.mwhive.advancedandroid.model.Repo;
 import io.reactivex.Observable;
+import io.reactivex.functions.Consumer;
 import java.util.List;
-import java.util.function.Consumer;
+
 import javax.inject.Inject;
 import org.threeten.bp.format.DateTimeFormatter;
 import timber.log.Timber;

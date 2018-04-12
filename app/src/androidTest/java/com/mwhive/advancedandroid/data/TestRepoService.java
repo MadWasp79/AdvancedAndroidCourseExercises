@@ -1,11 +1,13 @@
 package com.mwhive.advancedandroid.data;
 
 
+import com.mwhive.advancedandroid.model.Contributor;
 import com.mwhive.advancedandroid.model.Repo;
 import com.mwhive.advancedandroid.test.TestUtils;
 
 import java.io.IOException;
 
+import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -36,7 +38,12 @@ public class TestRepoService implements RepoService {
         return null;
     }
 
-    public void setSendError(boolean sendError) {
+  @Override
+  public Single<List<Contributor>> getContributors(String url) {
+    return null;
+  }
+
+  public void setSendError(boolean sendError) {
         this.sendError = sendError;
     }
 }
