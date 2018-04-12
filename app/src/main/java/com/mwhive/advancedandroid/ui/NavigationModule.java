@@ -1,5 +1,6 @@
 package com.mwhive.advancedandroid.ui;
 
+import com.mwhive.advancedandroid.di.ActivityScope;
 import dagger.Binds;
 import dagger.Module;
 import dagger.Provides;
@@ -11,6 +12,7 @@ import dagger.Provides;
 @Module
 public abstract class NavigationModule {
 
-    @Binds
-    abstract ScreenNavigator provideScreenNavigator(DefaultScreenNavigator screenNavigator);
+  @Binds
+  @ActivityScope
+  abstract ScreenNavigator provideScreenNavigator(DefaultScreenNavigator screenNavigator);
 }

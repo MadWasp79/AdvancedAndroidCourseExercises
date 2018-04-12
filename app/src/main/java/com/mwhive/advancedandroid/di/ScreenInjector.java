@@ -19,6 +19,7 @@ public class ScreenInjector {
 
     private final Map<Class<? extends Controller>, Provider<AndroidInjector.Factory<? extends Controller>>> screenInjectors;
     private final Map<String, AndroidInjector<Controller>> cache = new HashMap<>();
+
     @Inject
     ScreenInjector(Map<Class<? extends Controller>,
             Provider<AndroidInjector.Factory<? extends Controller>>> screenInjectors) {
@@ -31,9 +32,9 @@ public class ScreenInjector {
             throw new IllegalArgumentException("Controller must extend BaseController");
         }
 
-        String instancId = controller.getInstanceId();
-        if (cache.containsKey(instancId)) {
-            cache.get(instancId).inject(controller);
+        String instanceId = controller.getInstanceId();
+        if (cache.containsKey(instanceId)) {
+            cache.get(instanceId).inject(controller);
             return;
         }
 
@@ -41,11 +42,8 @@ public class ScreenInjector {
         AndroidInjector.Factory<Controller> injectorFactory =
                 (AndroidInjector.Factory<Controller>) screenInjectors.get(controller.getClass()).get();
         AndroidInjector<Controller> injector = injectorFactory.create(controller);
-
-        cache.put(instancId, injector);
-
+        cache.put(instanceId, injector);
         injector.inject(controller);
-
     }
 
     void clear(Controller controller) {
@@ -56,8 +54,6 @@ public class ScreenInjector {
         if (!(activity instanceof BaseActivity)) {
             throw new IllegalArgumentException("Controller must be hosted by BaseActivity");
         }
-
         return ((BaseActivity) activity).getScreenInjector();
     }
-
 }

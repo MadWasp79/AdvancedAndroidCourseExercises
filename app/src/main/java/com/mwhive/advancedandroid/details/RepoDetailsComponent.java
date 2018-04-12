@@ -11,20 +11,19 @@ import javax.inject.Named;
 @Subcomponent
 public interface RepoDetailsComponent extends AndroidInjector<RepoDetailsController> {
 
-  @Subcomponent.Builder
-  abstract class Builder extends AndroidInjector.Builder<RepoDetailsController>{
+    @Subcomponent.Builder
+    abstract class Builder extends AndroidInjector.Builder<RepoDetailsController> {
 
-    @BindsInstance
-    public abstract void bindRepoOwner(@Named("repo_owner") String repoOwner);
+        @BindsInstance
+        public abstract void bindRepoOwner(@Named("repo_owner") String repoOwner);
 
-    @BindsInstance
-    public abstract void bindRepoName(@Named("repo_name") String repoName);
+        @BindsInstance
+        public abstract void bindRepoName(@Named("repo_name") String repoName);
 
-    @Override
-    public void seedInstance(RepoDetailsController instance) {
-      bindRepoOwner(instance.getArgs().getString(RepoDetailsController.REPO_OWNER_KEY));
-      bindRepoOwner(instance.getArgs().getString(RepoDetailsController.REPO_NAME_KEY));
-
+        @Override
+        public void seedInstance(RepoDetailsController instance) {
+            bindRepoOwner(instance.getArgs().getString(RepoDetailsController.REPO_OWNER_KEY));
+            bindRepoName(instance.getArgs().getString(RepoDetailsController.REPO_NAME_KEY));
+        }
     }
-  }
 }

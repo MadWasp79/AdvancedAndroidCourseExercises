@@ -6,10 +6,12 @@ import com.bluelinelabs.conductor.Router;
 
 public interface ScreenNavigator {
 
-    void initWithRouter(Router router, Controller rootScreen);
+  void initWithRouter(Router router, Controller rootScreen);
 
-    boolean pop();
+  boolean pop();
 
-    void clear();
+  void goToRepoDetails(String repoOwner, String repoName);
+
+  void clear();
 
 }

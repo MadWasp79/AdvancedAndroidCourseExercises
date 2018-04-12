@@ -3,6 +3,7 @@
 buildscript {
     
     repositories {
+        mavenCentral()
         google()
         jcenter()
     }
@@ -27,7 +28,7 @@ ext {
     buildToolsVersion = '27.0.3'
     minSdkVersion = 21
     targetSdkVersion = 27
-    supportLibraryVersion = '27.1.0'
+    supportLibraryVersion = '27.1.1'
     daggerVersion = '2.11'
     retrofitVersion = '2.3.0'
     moshiVersion = '1.5.0'
@@ -41,6 +42,7 @@ ext {
     timberVersion = '4.5.1'
     butterknifeVersion = '8.8.1'
     mockitoVersion = '2.10.0'
+    glideVersion = '4.2.0'
 }
 
 task clean(type: Delete) {
