@@ -46,3 +46,6 @@ proguard/
 # Windows clutter
 Thumbs.db
 /.idea/gradle.xml
+libs/
+src/androidTest/resources/
+src/test/resources/mock/

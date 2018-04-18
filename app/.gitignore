@@ -1,1 +1,4 @@
 /build
+/src/androidTest/resources/mock
+/src/testest/resources/mock
+/src/debug/assets/mock

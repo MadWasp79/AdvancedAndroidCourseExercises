@@ -8,6 +8,8 @@ import com.mwhive.advancedandroid.model.Repo;
 import com.mwhive.advancedandroid.trending.TrendingReposComponent;
 import com.mwhive.advancedandroid.trending.TrendingReposController;
 
+import com.mwhive.advancedandroid.ui.ActivityViewInterceptor;
+import com.mwhive.advancedandroid.ui.ActivityViewInterceptorModule;
 import dagger.Binds;
 import dagger.Module;
 import dagger.android.AndroidInjector;
@@ -18,6 +20,7 @@ import javax.inject.Inject;
 @Module(subcomponents = {
     TrendingReposComponent.class,
     RepoDetailsComponent.class,
+
 })
 public abstract class MainScreenBindingModule {
 

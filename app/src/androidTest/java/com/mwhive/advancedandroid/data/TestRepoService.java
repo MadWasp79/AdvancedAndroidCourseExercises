@@ -39,7 +39,7 @@ public class TestRepoService implements RepoService {
   public Single<TrendingReposResponse> getTrendingRepos() {
     if ((errorFlags & FLAG_TRENDING_REPOS) == 0) {
       TrendingReposResponse response = testUtils
-          .loadJson("mock/get_trending_repos.json", TrendingReposResponse.class);
+          .loadJson("mock/search/get_trending_repos.json", TrendingReposResponse.class);
       if ((holdFlags & FLAG_TRENDING_REPOS) == FLAG_TRENDING_REPOS) {
         return holdingSingle(response, FLAG_TRENDING_REPOS);
       }
@@ -52,7 +52,7 @@ public class TestRepoService implements RepoService {
   public Single<Repo> getRepo(String repoOwner, String repoName) {
     if ((errorFlags & FLAG_GET_REPO) == 0) {
       Repo repo = testUtils
-          .loadJson("mock/get_repo.json", Repo.class);
+          .loadJson("mock/repos/get_repo.json", Repo.class);
       if ((holdFlags & FLAG_GET_REPO) == FLAG_GET_REPO) {
         return holdingSingle(repo, FLAG_GET_REPO);
       }
@@ -66,7 +66,7 @@ public class TestRepoService implements RepoService {
   public Single<List<Contributor>> getContributors(String url) {
     if ((errorFlags & FLAG_GET_CONTRIBUTORS) == 0) {
       List<Contributor> contributors = testUtils
-          .loadJson("mock/get_contributors.json",
+          .loadJson("mock/repos/contributors/get_contributors.json",
               Types.newParameterizedType(List.class, Contributor.class));
       if ((holdFlags & FLAG_GET_CONTRIBUTORS) == FLAG_GET_CONTRIBUTORS) {
         return holdingSingle(contributors, FLAG_GET_CONTRIBUTORS);
