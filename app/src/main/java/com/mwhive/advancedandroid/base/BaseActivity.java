@@ -15,20 +15,24 @@ import com.bluelinelabs.conductor.Router;
 import com.mwhive.advancedandroid.R;
 import com.mwhive.advancedandroid.di.Injector;
 import com.mwhive.advancedandroid.di.ScreenInjector;
+import com.mwhive.advancedandroid.lifecycle.ActivityLifecycleTask;
 import com.mwhive.advancedandroid.ui.ActivityViewInterceptor;
+import com.mwhive.advancedandroid.ui.RouterProvider;
 import com.mwhive.advancedandroid.ui.ScreenNavigator;
 
+import java.util.Set;
 import java.util.UUID;
 
 import javax.inject.Inject;
 
-public abstract class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends AppCompatActivity implements RouterProvider{
 
   private static String INSTANCE_ID_KEY = "instance_id";
 
   @Inject ScreenInjector screenInjector;
   @Inject ScreenNavigator screenNavigator;
   @Inject ActivityViewInterceptor activityViewInterceptor;
+  @Inject Set<ActivityLifecycleTask> activityLifecycleTasksSet;
 
   private String instanceId;
   private Router router;
@@ -49,9 +53,28 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     router = Conductor.attachRouter(this, screenContainer, savedInstanceState);
-    screenNavigator.initWithRouter(router, initialScreen());
     monitorBackStack();
+    for (ActivityLifecycleTask task : activityLifecycleTasksSet) {
+      task.onCreate(this);
+    }
     super.onCreate(savedInstanceState);
+  }
+
+  @Override
+  protected void onStart() {
+    super.onStart();
+    for (ActivityLifecycleTask task : activityLifecycleTasksSet) {
+      task.onStart(this);
+    }
+
+  }
+
+  @Override
+  protected void onResume() {
+    super.onResume();
+    for (ActivityLifecycleTask task : activityLifecycleTasksSet) {
+      task.onResume(this);
+    }
   }
 
   @Override
@@ -67,23 +90,46 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
   }
 
-  @LayoutRes
-  protected abstract int layoutRes();
+  @Override
+  public Router getRouter() {
+    return router;
+  }
 
-  protected abstract Controller initialScreen();
+  @Override
+  protected void onPause() {
+    super.onPause();
+    for (ActivityLifecycleTask task : activityLifecycleTasksSet) {
+      task.onPause(this);
+    }
+  }
 
-  public String getInstanceId() {
-    return instanceId;
+  @Override
+  protected void onStop() {
+    super.onStop();
+    for (ActivityLifecycleTask task : activityLifecycleTasksSet) {
+      task.onStop(this);
+    }
   }
 
   @Override
   protected void onDestroy() {
     super.onDestroy();
-    screenNavigator.clear();
     if (isFinishing()) {
       Injector.clearComponent(this);
     }
     activityViewInterceptor.clear();
+    for (ActivityLifecycleTask task : activityLifecycleTasksSet) {
+      task.onDestroy(this);
+    }
+  }
+
+  @LayoutRes
+  protected abstract int layoutRes();
+
+  public abstract Controller initialScreen();
+
+  public String getInstanceId() {
+    return instanceId;
   }
 
   public ScreenInjector getScreenInjector() {

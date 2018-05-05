@@ -6,6 +6,7 @@ import static org.mockito.Mockito.when;
 
 
 import com.mwhive.advancedandroid.data.RepoRepository;
+import com.mwhive.advancedandroid.lifecycle.DisposableManager;
 import com.mwhive.advancedandroid.model.Contributor;
 import com.mwhive.advancedandroid.model.Repo;
 import com.mwhive.advancedandroid.testutils.TestUtils;
@@ -18,6 +19,7 @@ import javax.annotation.Nullable;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 
@@ -37,8 +39,9 @@ public class RepoDetailsPresenterTest {
   @Mock Consumer<Throwable> contributorErrorConsumer;
 
   private Repo repo = TestUtils.loadJson("mock/repos/get_repo.json", Repo.class);
-  private List<Contributor> contributors = TestUtils.loadJson("mock/repos/contributors/get_contributors.json",
-      Types.newParameterizedType(List.class, Contributor.class));
+  private List<Contributor> contributors = TestUtils
+      .loadJson("mock/repos/contributors/get_contributors.json",
+          Types.newParameterizedType(List.class, Contributor.class));
   private String contributorsUrl = repo.contributorsUrl();
 
   @Before
@@ -55,8 +58,9 @@ public class RepoDetailsPresenterTest {
 
   }
 
-  private void initPresenter(){
-    new RepoDetailsPresenter(OWNER, NAME, repoRepository, viewModel);
+  private void initPresenter() {
+    new RepoDetailsPresenter(OWNER, NAME, repoRepository, viewModel,
+        Mockito.mock(DisposableManager.class));
   }
 
   @Test

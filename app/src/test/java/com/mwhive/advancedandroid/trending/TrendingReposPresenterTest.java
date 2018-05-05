@@ -2,6 +2,7 @@ package com.mwhive.advancedandroid.trending;
 
 import com.mwhive.advancedandroid.data.RepoRepository;
 import com.mwhive.advancedandroid.data.TrendingReposResponse;
+import com.mwhive.advancedandroid.lifecycle.DisposableManager;
 import com.mwhive.advancedandroid.model.Repo;
 import com.mwhive.advancedandroid.testutils.TestUtils;
 
@@ -118,6 +119,7 @@ public class TrendingReposPresenterTest {
   }
 
   private void initializePresenter() {
-    presenter = new TrendingReposPresenter(mViewModel, repoRepository, screenNavigator);
+    presenter = new TrendingReposPresenter(mViewModel, repoRepository, screenNavigator, Mockito.mock(
+        DisposableManager.class));
   }
 }

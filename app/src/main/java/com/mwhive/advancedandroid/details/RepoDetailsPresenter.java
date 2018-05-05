@@ -3,7 +3,9 @@ package com.mwhive.advancedandroid.details;
 
 import android.annotation.SuppressLint;
 import com.mwhive.advancedandroid.data.RepoRepository;
+import com.mwhive.advancedandroid.di.ForScreen;
 import com.mwhive.advancedandroid.di.ScreenScope;
+import com.mwhive.advancedandroid.lifecycle.DisposableManager;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -16,16 +18,17 @@ public class RepoDetailsPresenter {
       @Named("repo_owner") String repoOwner,
       @Named("repo_name") String repoName,
       RepoRepository repoRepository,
-      RepoDetailsViewModel viewModel) {
+      RepoDetailsViewModel viewModel,
+      @ForScreen DisposableManager disposableManager) {
 
-    repoRepository.getRepo(repoOwner, repoName)
+    disposableManager.add(repoRepository.getRepo(repoOwner, repoName)
         .doOnSuccess(viewModel.processRepo())
         .doOnError(viewModel.detailsError())
         .flatMap(repo -> repoRepository.getContributors(repo.contributorsUrl())
             .doOnError(viewModel.contributorsError()))
         .subscribe(viewModel.processContributors(), throwable -> {
           //we handle logging in the view model
-        });
+        }));
 
   }
 
