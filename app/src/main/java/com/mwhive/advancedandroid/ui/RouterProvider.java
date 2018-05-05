@@ -1,14 +1,17 @@
 package com.mwhive.advancedandroid.ui;
 
+
 import com.bluelinelabs.conductor.Controller;
 import com.bluelinelabs.conductor.Router;
 
+/**
+ * Created by MadWasp79 on 01-May-18.
+ */
 
-public interface ScreenNavigator {
+public interface RouterProvider {
 
-  boolean pop();
+  Router getRouter();
 
-  void goToRepoDetails(String repoOwner, String repoName);
-
+  Controller initialScreen();
 
 }

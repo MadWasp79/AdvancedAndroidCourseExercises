@@ -15,18 +15,18 @@ import okhttp3.OkHttpClient;
 @Module
 public abstract class NetworkModule {
 
-    @Provides
-    @Singleton
-    static Call.Factory provideOkHttp(MockInterceptor mockInterceptor) {
+  @Provides
+  @Singleton
+  static Call.Factory provideOkHttp(MockInterceptor mockInterceptor) {
 
-        return new OkHttpClient.Builder()
-            .addInterceptor(mockInterceptor)
-            .build();
-    }
+    return new OkHttpClient.Builder()
+        .addInterceptor(mockInterceptor)
+        .build();
+  }
 
-    @Provides
-    @Named("base_url")
-    static String provideBaseUrl() {
-        return "https://api.github.com/";
-    }
+  @Provides
+  @Named("base_url")
+  static String provideBaseUrl() {
+    return "https://api.github.com/";
+  }
 }

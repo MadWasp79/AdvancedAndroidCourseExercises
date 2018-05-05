@@ -1,6 +1,7 @@
 package com.mwhive.advancedandroid.details;
 
 
+import com.mwhive.advancedandroid.base.ScreenModule;
 import com.mwhive.advancedandroid.di.ScreenScope;
 import dagger.BindsInstance;
 import dagger.Subcomponent;
@@ -8,7 +9,10 @@ import dagger.android.AndroidInjector;
 import javax.inject.Named;
 
 @ScreenScope
-@Subcomponent
+@Subcomponent(modules = {
+    ScreenModule.class,
+    RepoDetailsScreenModule.class,
+})
 public interface RepoDetailsComponent extends AndroidInjector<RepoDetailsController> {
 
     @Subcomponent.Builder
