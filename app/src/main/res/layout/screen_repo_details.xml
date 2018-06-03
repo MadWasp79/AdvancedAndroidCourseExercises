@@ -11,9 +11,9 @@
   <FrameLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingEnd="16dp"
-    android:paddingStart="16dp"
     android:paddingTop="10dp"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     <LinearLayout
@@ -92,9 +92,9 @@
       <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:paddingTop="10dp"
         android:clipChildren="false"
-        android:clipToPadding="false"
-        android:paddingTop="10dp">
+        android:clipToPadding="false">
 
         <android.support.v7.widget.RecyclerView
           android:id="@+id/contributor_list"

@@ -66,24 +66,24 @@ class RepoAdapter extends RecyclerView.Adapter<RepoAdapter.RepoViewHolder> {
         @BindView(R.id.tv_fork_count) TextView forkCountText;
         @BindView(R.id.tv_star_count) TextView starCountText;
 
-        private Repo mRepo;
+        private Repo repo;
 
         RepoViewHolder(View itemView, RepoClickedListener listener) {
             super(itemView);
             ButterKnife.bind(this, itemView);
             itemView.setOnClickListener(v -> {
-                if (mRepo != null) {
-                    listener.onRepoClicked(mRepo);
+                if (repo != null) {
+                    listener.onRepoClicked(repo);
                 }
             });
         }
 
         void bind(Repo repo) {
-            mRepo = repo;
-            repoNameText.setText(mRepo.name());
-            repoDescriptionText.setText(mRepo.description());
-            forkCountText.setText(NumberFormat.getInstance().format(mRepo.forksCount()));
-            starCountText.setText(NumberFormat.getInstance().format(mRepo.stargazersCount()));
+            this.repo = repo;
+            repoNameText.setText(repo.name());
+            repoDescriptionText.setText(repo.description());
+            forkCountText.setText(NumberFormat.getInstance().format(repo.forksCount()));
+            starCountText.setText(NumberFormat.getInstance().format(repo.stargazersCount()));
         }
     }
 
